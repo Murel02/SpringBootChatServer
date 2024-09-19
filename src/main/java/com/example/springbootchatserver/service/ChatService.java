@@ -1,23 +1,34 @@
 package com.example.springbootchatserver.service;
 
+import com.example.springbootchatserver.client.ChatClient;
 import com.example.springbootchatserver.model.ChatMessage;
 import com.example.springbootchatserver.server.ChatServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ChatService {
 
-    private final ChatServer chatServer;
+    private final ChatClient chatClient;
 
-    public ChatService() throws IOException {
-        // Initialize ChatServer on a separate thread
-        this.chatServer = new ChatServer(5000);
-        new Thread(() -> chatServer.start()).start();
+    @Autowired
+    public ChatService(ChatClient chatClient){
+        this.chatClient = chatClient;
     }
 
-    public void handleMessage(ChatMessage message){
-        System.out.println("Processing message: " + message);
-        chatServer.broadcastMessage(message.toString());
+    public void handleMessage(String message){
+       try {
+           chatClient.sendMessage(message);
+           String response = chatClient.receiveMessage();
+       }catch (IOException e){
+           e.printStackTrace();
+       }
+    }
+
+    public List<String> getMessages(){
+        return new ArrayList<>();
     }
 }

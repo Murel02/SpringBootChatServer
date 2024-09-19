@@ -41,11 +41,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void receiveMessage(){
-
-
-    }
-
     public void sendMessage(String message) {
         if (writer != null) {
             writer.println(message);

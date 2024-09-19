@@ -19,7 +19,7 @@ public class ChatController {
 
     @GetMapping("/chat")
     public String chatPage(Model model){
-        // Model attributes can be used to populate the chat page
+
         return "chat";
     }
 
@@ -27,8 +27,8 @@ public class ChatController {
     public String sendMessage(@RequestParam("message") String message, Model model){
         if (message != null && !message.trim().isEmpty()){
             ChatMessage chatMessage = new ChatMessage("client1", LocalDateTime.now(), "TEXT", message);
-            chatService.handleMessage(chatMessage);
+            chatService.handleMessage(chatMessage.toString());
         }
-        return "redirect:/chat"; // Redirect to avoid form resubmission
+        return "redirect:/chat";
     }
 }
