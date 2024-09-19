@@ -1,34 +1,23 @@
 package com.example.springbootchatserver.service;
 
-import com.example.springbootchatserver.client.ChatClient;
 import com.example.springbootchatserver.model.ChatMessage;
+import com.example.springbootchatserver.server.ChatServer;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
 
 @Service
 public class ChatService {
 
-    private final Set<ChatClient> clients = new HashSet<>();
+    private final ChatServer chatServer;
 
-    public void registerClient(ChatClient client){
-        clients.add(client);
-    }
-
-    public void unregisterClient(ChatClient client){
-        clients.remove(client);
+    public ChatService() throws IOException {
+        // Initialize ChatServer on a separate thread
+        this.chatServer = new ChatServer(5000);
+        new Thread(() -> chatServer.start()).start();
     }
 
     public void handleMessage(ChatMessage message){
         System.out.println("Processing message: " + message);
-
-        broadcastMessage(message);
-    }
-
-    public void broadcastMessage(ChatMessage message){
-        for (ChatClient client : clients){
-            client.sendMessage(message.toString());
-        }
+        chatServer.broadcastMessage(message.toString());
     }
 }
