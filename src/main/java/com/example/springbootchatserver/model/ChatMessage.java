@@ -57,6 +57,11 @@ public class ChatMessage {
         return clientId + "|" + timestamp.format(formatter) + "|" + type + "|" + content;
     }
 
+    /*
+    Receives entire message as a single String
+    Splits the message into separate Strings Id, timestamp, type and content and places the Strings into an array
+    Creates a new ChatMessage object from the Strings in the array
+     */
     public static ChatMessage fromString(String messageStr){
         String[] parts = messageStr.split("\\|");
         String clientId = parts[0];

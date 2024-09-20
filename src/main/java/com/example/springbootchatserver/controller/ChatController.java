@@ -30,6 +30,12 @@ public class ChatController {
         }
     }
 
+    /*
+    The method runs when you press the send button
+    The method uses a message from an HTML file using @RequestParam and a Model object
+    If the message is not null or is not an empty message it makes a ChatMessage object using a username from a User object, the current time and a message from the HTML file
+    The user is sent to the chat page
+     */
     @PostMapping("/send")
     public String sendMessage(@RequestParam("message") String message, User user, Model model){
         if (message != null && !message.trim().isEmpty()){

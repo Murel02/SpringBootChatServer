@@ -16,6 +16,12 @@ public class ClientHandler implements Runnable {
         this.server = server;
     }
 
+    /*
+    BufferedReader reads incoming messages from the socket object
+    The while loop goes through all incoming messages skipping the empty ones
+    And then broadcasts the messages to all connected clients
+    The "finally" is used to disconnect a client in case the client disconnects or an error
+     */
     @Override
     public void run() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
@@ -41,6 +47,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /*
+    Checks if the writer exists
+    Sends a message with writer.println(message)
+     */
     public void sendMessage(String message) {
         if (writer != null) {
             writer.println(message);
