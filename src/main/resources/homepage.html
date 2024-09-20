@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Today</title>
+    <style>
+        body {
+            background-color: #b233ff;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #337aff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 40px;
+            position: relative;
+        }
+        .header .buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .header button {
+            background-color: #b233ff;
+            border: 2px solid pink;
+            border-radius: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+        }
+        .support-button {
+            background-color: #b233ff;
+            border: 2px solid pink;
+            border-radius: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+        }
+        .hero {
+            background-image: url('image/stockPhoto.jpg');
+            background-size: cover;
+            height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .hero h2 {
+            color: white;
+            font-size: 48px;
+            z-index: 1;
+        }
+        .description {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .desc-box {
+            background-color: transparent;
+            width: 45%;
+            padding: 10px;
+            font-size: 18px;
+            color: white;
+            border: 1px solid transparent;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <button class="support-button" onclick="window.location.href='support.html'">Support</button>
+    <h1 style="flex-grow: 1; text-align: center; color: white; margin-left: 20px;">Chat Today</h1>
+    <div class="buttons">
+        <button onclick="window.location.href='signup.html'">Sign Up</button>
+        <button onclick="window.location.href='login.html'">Login</button>
+    </div>
+</div>
+
+<div class="hero">
+    <h2>Start chatting today</h2>
+</div>
+</body>
+</html>

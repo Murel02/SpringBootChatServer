@@ -35,6 +35,7 @@ public class ChatClient {
     public void sendMessage(String message) throws IOException{
         if (out != null){
             out.println(message);
+            out.flush();
         }else {
             throw new IOException("Not connected to sever");
         }
@@ -48,7 +49,7 @@ public class ChatClient {
         }
     }
 
-    public void close() throws IOException{
+    public void close() {
         try {
             if (out != null) out.close();
             if (in != null) in.close();
