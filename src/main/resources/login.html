@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <title>Chat Today Login</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="image/favicon.png" type="image/x-icon">
-
 </head>
-<body>
-<center> <h1 style="color: white"> Login </h1> </center>
-<form>
-    <div class="container">
-        <label>Username : </label>
-        <input type="text" placeholder="Username" name="username" required>
-        <label>Password : </label>
-        <input type="text" placeholder="Password" name="password" required>
+<body class="login-page">
+<div class="login-header"> <!-- Changed from header to login-header -->
+    <h1 style="color: white; cursor: pointer;" onclick="window.location.href='homepage.html'">Chat Today</h1>
+</div>
+<div class="login-container">
+    <h1>Login</h1>
+    <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password" name="password" required>
+
         <button type="submit">Login</button>
-    </div>
-</form>
+    </form>
+</div>
 </body>
 </html>

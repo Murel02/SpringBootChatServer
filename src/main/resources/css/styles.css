@@ -1,0 +1,182 @@
+body {
+    background-color: #b233ff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.header {
+    background-color: #337aff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    position: relative;
+}
+
+.header .buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.header button {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+}
+
+.support-button {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+}
+
+.hero {
+    background-image: url('../image/stockPhoto.jpg');
+    background-size: cover;
+    height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero h2 {
+    color: white;
+    font-size: 48px;
+    z-index: 1;
+    text-align: center;
+}
+
+.support-hero {
+    background-color: #337aff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.support-text-box {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.support-text-box h1 {
+    font-size: 48px;
+    margin: 0;
+}
+
+.support-text-box p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.phone-box {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.phone-box h2 {
+    font-size: 36px;
+    margin: 0;
+}
+
+.phone-box p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+/* Baggrundsfarve og skrifttype for hele siden */
+.login-page {
+    background-color: #b233ff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh; /* Fuldhøjde for siden */
+    display: flex;
+    align-items: center; /* Centrerer vertikalt */
+    justify-content: center; /* Centrerer horisontalt */
+}
+
+/* Container til login-boksen */
+.login-container {
+    background-color: rgba(51, 122, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+}
+
+/* Overskrift i login-boksen */
+.login-container h1 {
+    margin-bottom: 20px;
+    color: white; /* Hvid tekstfarve */
+}
+
+/* Label for input-felterne */
+.login-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: white; /* Hvid tekstfarve */
+    text-align: left;
+}
+
+/* Input-felter til brugernavn og adgangskode */
+.login-container input {
+    width: 100%; /* Fylder hele bredden */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none; /* Ingen kant */
+    border-radius: 5px;
+}
+
+/* Knap til login */
+.login-container button {
+    width: 100%; /* Fylder hele bredden */
+    padding: 10px;
+    background-color: #b233ff;
+    border: 2px solid pink;
+    border-radius: 5px;
+    color: white; /* Hvid tekstfarve */
+    font-size: 16px;
+    cursor: pointer; /* Cursor skifter til pointer ved hover */
+}
+
+/* Hover-effekt på login-knappen */
+.login-container button:hover {
+    background-color: #a52bc5; /* Mørkere lilla ved hover */
+}
+.login-header {
+    background-color: #b233ff;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #b233ff;
+}
+
