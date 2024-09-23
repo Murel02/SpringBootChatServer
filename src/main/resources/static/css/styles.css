@@ -19,7 +19,7 @@ body {
 }
 .header button {
     background-color: #b233ff;
-    border: 2px solid #e307aa;
+    border: 2px solid pink;
     border-radius: 10px;
     padding: 10px 20px;
     cursor: pointer;
@@ -28,7 +28,7 @@ body {
 }
 .support-button {
     background-color: #b233ff;
-    border: 2px #e307aa;
+    border: 2px solid pink;
     border-radius: 10px;
     padding: 10px 15px;
     cursor: pointer;
@@ -36,7 +36,7 @@ body {
     color: white;
 }
 .hero {
-    background-image: url('image/stockPhoto.jpg');
+    background-image: url('../../image/stockPhoto.jpg'); /* Correct path to your image */
     background-size: cover;
     height: calc(100vh - 80px);
     display: flex;
@@ -47,4 +47,5 @@ body {
 .hero h2 {
     color: white;
     font-size: 48px;
+    z-index: 1;
 }
