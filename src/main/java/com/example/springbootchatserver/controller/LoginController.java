@@ -8,51 +8,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller // Marker denne klasse som en Spring MVC Controller, der håndterer HTTP-anmodninger
+@Controller
 public class LoginController {
 
-    private final UserService userService; // UserService håndterer logik for brugere (login/registrering)
-
+    private final UserService userService;
 
     @Autowired
     public LoginController(UserService userService) {
         this.userService = userService;
     }
 
-    // Simpel login-side (hvis nødvendigt for visning)
+
     @GetMapping("/login")
     public String loginPage() {
-        return "Login side her"; // En placeholder-tekst, da vi ikke bruger MVC-visninger
+        return "redirect:/login.html";
     }
 
-    // Håndterer login-anmodninger
+    // Handle login requests
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username, // Henter brugernavn fra formularen
-                        @RequestParam("password") String password, // Henter adgangskode fra formularen
-                        Model model) { // Model bruges til at sende data tilbage til visningen
+    public String login(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        Model model) {
 
-        // Autentificerer brugeren ved hjælp af UserService
         if (userService.authenticate(username, password)) {
-            return "Login succesfuldt!"; // Returnerer en succesmeddelelse som svar
+            return "redirect:/chat.html"; // Redirect to chat.html upon successful login
         } else {
-            model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode"); // Tilføjer fejlbesked til modellen
-            return "Login mislykkedes"; // Returnerer en fejlbesked som svar
-        }
-    }
-
-    // Håndterer registrering af nye brugere
-    @PostMapping("/register")
-    public String register(@RequestParam("username") String username, // Henter brugernavn fra formularen
-                           @RequestParam("password") String password, // Henter adgangskode fra formularen
-                           Model model) {
-
-        // Registrerer den nye bruger ved hjælp af UserService
-        if (userService.registerUser(username, password)) {
-            model.addAttribute("message", "Registrering succesfuld! Log venligst ind.");
-            return "Registrering succesfuld!"; // Returnerer en succesmeddelelse som svar
-        } else {
-            model.addAttribute("error", "Brugernavnet findes allerede.");
-            return "Registrering mislykkedes: Brugernavnet findes allerede."; // Returnerer en fejlbesked som svar
+            model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
+            return "redirect:/login.html"; // Return to login page on failure
         }
     }
 }

@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Today Login</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="image/favicon.png" type="image/x-icon">
 </head>
 <body class="login-page">
-<div class="login-header"> <!-- Changed from header to login-header -->
+<div class="login-header">
     <h1 style="color: white; cursor: pointer;" onclick="window.location.href='homepage.html'">Chat Today</h1>
 </div>
 <div class="login-container">
     <h1>Login</h1>
-    <form>
+    <form action="/login" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" placeholder="Username" name="username" required>
 
