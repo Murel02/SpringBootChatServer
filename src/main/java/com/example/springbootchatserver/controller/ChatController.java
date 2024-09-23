@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 
 @Controller
 public class ChatController {
-
     @Autowired
     private ChatService chatService;
 
@@ -24,7 +23,7 @@ public class ChatController {
         String username = (String) session.getAttribute("username");
         if (username != null){
             model.addAttribute("username", username);
-            return "chat";
+            return "redirect:/chat.html";
         } else {
             return "redirect:/login";
         }
