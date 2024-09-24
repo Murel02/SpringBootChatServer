@@ -21,9 +21,10 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "redirect:/login.html";
+        return "login";
     }
 
+    /*
     // Handle login requests
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
