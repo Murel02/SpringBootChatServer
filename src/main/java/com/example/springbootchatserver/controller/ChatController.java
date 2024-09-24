@@ -30,6 +30,8 @@ public class ChatController {
        return "chat";
     }
 
+    /*
+     */
     @GetMapping("/stream")
     public SseEmitter stream() {
         SseEmitter emitter = new SseEmitter();

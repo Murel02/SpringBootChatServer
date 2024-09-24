@@ -19,6 +19,12 @@ public class ChatServer {
     private List<ClientHandler> clients = new ArrayList<>();
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    /*
+    This creates a socket that listens for incoming connections
+    When a client connects a new ClientHandler object is created
+    It listens for messages from a client and gives it to a broadcast method
+    that sends the message to all connected clients
+     */
     public void startServer(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
