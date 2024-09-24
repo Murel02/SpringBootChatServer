@@ -22,22 +22,32 @@ public class ChatController {
 
     @Autowired
     private ChatService chatService;
-    private final List<String> chatHistory = new ArrayList<>();
-    private final List<SseEmitter> emitters = new ArrayList<>();
 
-    @GetMapping("/")
+    @GetMapping("/chat")
     public String chatPage(HttpSession session, Model model){
+        //check if the user is loggged in
+        String username = (String) session.getAttribute("username");
+        System.out.println("Username from session: " + username);  // Debugging
+
+        if (username == null){
+            return "redirect:/login";
+        }
+
+        List<ChatMessage> messages = chatService.getChatMessages();
+        model.addAttribute("messages", messages);
        return "chat";
     }
 
-    /*
-     */
+
     @GetMapping("/stream")
-    public SseEmitter stream() {
-        SseEmitter emitter = new SseEmitter();
-        chatService.listenForIncomingMessages(emitter);  // Listen for new messages and send them via SSE
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> emitters.remove(emitter));
+    public SseEmitter stream(HttpSession session) {
+        //Check if the user is logged in
+        String username = (String) session.getAttribute("username");
+        if (username == null){
+            throw new IllegalStateException("User must be logged in to acces this endpoint.");
+        }
+       SseEmitter emitter = new SseEmitter(-1L);
+       chatService.listenForIncomingMessages(emitter);
         return emitter;
     }
 
@@ -49,11 +59,24 @@ public class ChatController {
     The user is sent to the chat page
      */
     @PostMapping("/send")
-    public String sendMessage(@RequestParam("message") String message, Model model) {
-        if (message != null && !message.trim().isEmpty()) {
-            chatService.sendMessageToServer(message);  // Send message to the chat server
+    public String sendMessage(@RequestParam("message") String message, HttpSession session) {
+        //Retrieve username from the session
+        String username = (String) session.getAttribute("username");
+
+        if (username == null){
+            return "redirect:/login";
         }
-        return "redirect:/";  // Redirect to chat page
+
+        LocalDateTime timestamp = LocalDateTime.now();
+        String type = "TEXT";
+
+        ChatMessage newMessage = new ChatMessage(username,timestamp,type,message);
+
+        //add the message to the session to track the last sent message
+        session.setAttribute("lastSentMessage", newMessage);
+
+        chatService.broadcastMessage(newMessage);
+        return "redirect:/chat";  // Redirect to chat page
     }
 
 }

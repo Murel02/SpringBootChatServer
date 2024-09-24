@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration Form</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/image/favicon.png" type="image/x-icon">
 </head>
-<body>
-<h1>Register User</h1>
-
-<!-- Error message (Thymeleaf will display this if there's an error in model) -->
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
+<body class="login-page">
+<div class="login-header">
+    <h1 style="color: white; cursor: pointer;" onclick="window.location.href='/home'">Chat Today</h1>
 </div>
 
-<form action="/registeruser" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Username" name="username" required>
+<div class="login-container">
+    <h1>Register User</h1>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" placeholder="Password" name="password" required>
+    <!-- Error message (Thymeleaf will display this if there's an error in model) -->
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
 
-    <button type="submit">Register</button>
-</form>
+    <form action="/registeruser" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password" name="password" required>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
 </body>
 </html>

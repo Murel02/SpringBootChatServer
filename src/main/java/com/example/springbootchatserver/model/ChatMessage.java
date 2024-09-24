@@ -54,7 +54,7 @@ public class ChatMessage {
 
     @Override
     public String toString() {
-        return clientId + "|" + timestamp.format(formatter) + "|" + type + "|" + content;
+        return clientId + " | " + timestamp.format(formatter) + " | " + type + " | " + content;
     }
 
     /*

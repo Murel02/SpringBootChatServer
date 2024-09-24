@@ -46,7 +46,11 @@ public class ClientHandler implements Runnable {
 
     // Sends a message to the client
     public void sendMessage(String message) {
-        out.println(message);  // Send message to the client
+        try {
+            out.println(message);  // Send message to the client
+        }catch (Exception e){
+            System.err.println("Failed to send message: " + e.getMessage());
+        }
     }
 
     // Close the connection

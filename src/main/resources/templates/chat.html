@@ -3,51 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Room</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-
-    <script src="https://unpkg.com/emoji-picker-element"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/image/favicon.png" type="image/x-icon">
 </head>
 <body>
-<div class="container">
-    <h1>Chat Room</h1>
-    <div id="chatBox" class="border p-3 mb-3" style="height: 300px; overflow-y: auto;">
+<div class="chat-header">
+    <h1>Chat Today</h1>
+</div>
 
+<div class="chat-container">
+    <h1 class="chat-room-heading">Chat Room</h1>
+
+    <div id="chatBox" class="chat-box">
+        <ul id="messageList">
+            <!-- Iterate over the messages and display them -->
+            <li th:each="message : ${messages}">
+                <span th:text="${message.toString()}"></span>
+            </li>
+        </ul>
     </div>
-    <form action="/send" method="post">
+
+    <form id="messageForm">
         <div class="input-group">
-
             <input type="text" class="form-control" id="messageInput" name="message" placeholder="Type a message">
-
-            <div id="emojiPickerContainer" class="input-group-append"></div>
+            <div id="emojiPickerContainer"></div>
             <button class="btn btn-primary" type="submit">Send</button>
         </div>
     </form>
 </div>
 
 <script>
-
     const emojiPickerContainer = document.getElementById('emojiPickerContainer');
     const emojiPicker = document.createElement('emoji-picker');
     emojiPickerContainer.appendChild(emojiPicker);
 
-
     const messageInput = document.getElementById('messageInput');
-
-
     emojiPicker.addEventListener('emoji-click', event => {
         messageInput.value += event.detail.unicode;
     });
 
-
     const chatBox = document.getElementById('chatBox');
+    const messageList = document.getElementById('messageList');
     const eventSource = new EventSource("/stream");
 
     eventSource.onmessage = function(event) {
-        const newMessage = document.createElement('div');
+        const newMessage = document.createElement('li');
         newMessage.textContent = event.data;
-        chatBox.appendChild(newMessage);
+        messageList.appendChild(newMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
     };
+
+    // Handle form submission using AJAX to prevent page reload
+    const messageForm = document.getElementById('messageForm');
+    messageForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value;
+
+        fetch('/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                message: message
+            })
+        }).then(response => {
+            if (response.ok) {
+                messageInput.value = ''; // Clear the input field
+            }
+        }).catch(error => {
+            console.error('Error sending message:', error);
+        });
+    });
 </script>
 </body>
 </html>

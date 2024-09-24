@@ -1,6 +1,7 @@
 package com.example.springbootchatserver.controller;
 
 import com.example.springbootchatserver.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,16 +27,18 @@ public class LoginController {
 
 
     // Handle login requests
-    @PostMapping("/login")
+    @PostMapping("/loginRequest")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        HttpSession session,
                         Model model) {
 
         if (userService.authenticate(username, password)) {
-            return "redirect:/"; // Redirect to chat.html upon successful login
+            session.setAttribute("username", username);
+            return "redirect:/chat"; // Redirect to chat.html upon successful login
          } else {
             model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
-            return "redirect:/login"; // Return to login page on failure
+            return "/login"; // Return to login page on failure
         }
     }
 
@@ -44,7 +47,7 @@ public class LoginController {
         return "registeruser";
     }
 
-    //Handle sign up requst
+    //Handle sign up request
     @PostMapping("/registeruser")
     public String registeruser(@RequestParam ("username") String username,
                                @RequestParam ("password") String password,
@@ -55,11 +58,15 @@ public class LoginController {
             return "redirect:/login";
 
         } else {
-            model.addAttribute("Error", "Bruger er eksitere allerede");
+            model.addAttribute("error", "Username already exists");
             return "registeruser";
+        }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/login";
     }
-
 
 }

@@ -1,4 +1,9 @@
-body {
+/* Global Styles */
+* {
+    box-sizing: border-box;
+}
+
+body, html {
     background-color: #b233ff;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -6,6 +11,23 @@ body {
     overflow: hidden;
 }
 
+/* Button Styling */
+button, .header button, .support-button {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .header button:hover, .support-button:hover {
+    background-color: #a52bc5;
+}
+
+/* Header */
 .header {
     background-color: #337aff;
     display: flex;
@@ -20,29 +42,11 @@ body {
     gap: 15px;
 }
 
-.header button {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    border-radius: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    color: white;
-}
-
-.support-button {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    border-radius: 10px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    color: white;
-}
-
+/* Hero Section */
 .hero {
     background-image: url('../image/stockPhoto.jpg');
     background-size: cover;
+    background-position: center;
     height: calc(100vh - 80px);
     display: flex;
     align-items: center;
@@ -53,10 +57,10 @@ body {
 .hero h2 {
     color: white;
     font-size: 48px;
-    z-index: 1;
-    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* Support Section */
 .support-hero {
     background-color: #337aff;
     height: 100vh;
@@ -67,10 +71,9 @@ body {
     color: white;
     text-align: center;
     padding: 20px;
-    box-sizing: border-box;
 }
 
-.support-text-box {
+.support-text-box, .phone-box {
     background-color: #b233ff;
     border: 2px solid pink;
     padding: 20px;
@@ -78,44 +81,26 @@ body {
     margin-bottom: 20px;
 }
 
-.support-text-box h1 {
-    font-size: 48px;
+.support-text-box h1, .phone-box h2 {
+    font-size: 42px;
     margin: 0;
 }
 
-.support-text-box p {
+.support-text-box p, .phone-box p {
     font-size: 18px;
     margin-top: 10px;
 }
 
-.phone-box {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.phone-box h2 {
-    font-size: 36px;
-    margin: 0;
-}
-
-.phone-box p {
-    font-size: 18px;
-    margin-top: 10px;
-}
-/* Baggrundsfarve og skrifttype for hele siden */
+/* Login Page */
 .login-page {
-    background-color: #b233ff;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh; /* Fuldhøjde for siden */
     display: flex;
-    align-items: center; /* Centrerer vertikalt */
-    justify-content: center; /* Centrerer horisontalt */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-/* Container til login-boksen */
+/* Login Container */
 .login-container {
     background-color: rgba(51, 122, 255, 0.9);
     padding: 40px;
@@ -125,45 +110,49 @@ body {
     text-align: center;
 }
 
-/* Overskrift i login-boksen */
 .login-container h1 {
     margin-bottom: 20px;
-    color: white; /* Hvid tekstfarve */
+    color: white;
 }
 
-/* Label for input-felterne */
 .login-container label {
     display: block;
     margin-bottom: 5px;
-    color: white; /* Hvid tekstfarve */
+    color: white;
     text-align: left;
 }
 
-/* Input-felter til brugernavn og adgangskode */
 .login-container input {
-    width: 100%; /* Fylder hele bredden */
+    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: none; /* Ingen kant */
+    border: 2px solid transparent;
     border-radius: 5px;
+    transition: border 0.3s ease;
 }
 
-/* Knap til login */
+.login-container input:focus {
+    border: 2px solid pink;
+    outline: none;
+}
+
+/* Login Button */
 .login-container button {
-    width: 100%; /* Fylder hele bredden */
+    width: 100%;
     padding: 10px;
     background-color: #b233ff;
     border: 2px solid pink;
     border-radius: 5px;
-    color: white; /* Hvid tekstfarve */
+    color: white;
     font-size: 16px;
-    cursor: pointer; /* Cursor skifter til pointer ved hover */
+    cursor: pointer;
 }
 
-/* Hover-effekt på login-knappen */
 .login-container button:hover {
-    background-color: #a52bc5; /* Mørkere lilla ved hover */
+    background-color: #a52bc5;
 }
+
+/* Login Header */
 .login-header {
     background-color: #b233ff;
     display: flex;
@@ -171,12 +160,100 @@ body {
     padding: 20px 0;
 }
 
-.login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #b233ff;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%;
+    }
+
+    .hero h2 {
+        font-size: 36px;
+    }
+
+    .header {
+        padding: 10px 20px;
+    }
 }
+
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+/* Style for the chat container */
+.chat-container {
+    background-color: rgba(51, 122, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 600px; /* Increased the width from 400px to 600px */
+    max-width: 100%;
+    margin: 0 auto; /* Center the container horizontally */
+    display: flex;
+    flex-direction: column; /* Allows the content to stack vertically */
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Set a height for proper vertical centering */
+}
+
+/* Chat box */
+#chatBox {
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%; /* Ensure the chat box fills the container */
+    height: 400px; /* Increased the height to make it more spacious */
+    overflow-y: auto;
+}
+
+/* Individual message style */
+#chatBox li {
+    list-style: none;
+    padding: 5px 0;
+    color: black;
+    font-size: 16px;
+    text-align: left;
+}
+
+/* Message input box */
+.input-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#messageInput {
+    flex: 1;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+button.btn-primary {
+    background-color: #b233ff;
+    border: 2px solid pink;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button.btn-primary:hover {
+    background-color: #a52bc5;
+}
+
+/* Chat Room heading */
+.chat-room-heading {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    text-align: center;
+}
+
 
