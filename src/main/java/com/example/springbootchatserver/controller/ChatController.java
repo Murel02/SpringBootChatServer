@@ -27,7 +27,6 @@ public class ChatController {
     public String chatPage(HttpSession session, Model model){
         //check if the user is loggged in
         String username = (String) session.getAttribute("username");
-        System.out.println("Username from session: " + username);  // Debugging
 
         if (username == null){
             return "redirect:/login";
