@@ -27,6 +27,7 @@ public class ClientHandler implements Runnable {
         try {
             // Continuously listen for messages from the client
             while ((message = in.readLine()) != null) {
+                System.out.println("Message received from client: " + message);
                 if (messageListener != null) {
                     // Notify the server that a message has been received
                     messageListener.accept(message);

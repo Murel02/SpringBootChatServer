@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Registration form</title>
+    <title>Registration Form</title>
 </head>
 <body>
-<h1>Username</h1>
-<h1>Password</h1>
-<form>
-    <label> Username : </label>
-    <input type="text" placeholder="Username" name = "username">
-    <label> Password : </label>
-    <input type ="text" placeholder="Password" name="Password" required>
+<h1>Register User</h1>
 
+<!-- Error message (Thymeleaf will display this if there's an error in model) -->
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form action="/registeruser" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Username" name="username" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Password" name="password" required>
+
+    <button type="submit">Register</button>
 </form>
-<button type ="submit"> login</button>
 </body>
 </html>

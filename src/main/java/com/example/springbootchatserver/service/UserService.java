@@ -49,6 +49,13 @@ public class UserService {
        }
     }
 
+    public boolean authenticate(String username, String password){
+        if (users.containsKey(username)){
+            return users.get(username).equals(password);
+        }
+        return false;
+    }
+
     public boolean registerUser(String username, String password){
         if (users.containsKey(username)){
             return false;

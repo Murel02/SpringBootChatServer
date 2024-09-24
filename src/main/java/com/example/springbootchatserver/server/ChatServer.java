@@ -34,7 +34,7 @@ public class ChatServer {
 
                 // Set up a message listener to handle messages from this client
                 clientHandler.setMessageListener(message -> {
-                    System.out.println("Received message: " + message);
+                    System.out.println("Broadcasting message from client: " + message);
                     broadcastMessage(message);  // Broadcast the message to all clients
                 });
 
@@ -55,6 +55,7 @@ public class ChatServer {
     }
 
     public void onMessageReceived(Consumer<String> listener){
+        System.out.println("Setting message listener for all clients");
         for (ClientHandler client : clients){
             client.setMessageListener(listener);
         }

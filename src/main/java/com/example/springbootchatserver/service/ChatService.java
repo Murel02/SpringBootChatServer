@@ -30,6 +30,7 @@ public class ChatService {
         chatServer.broadcastMessage(message);
     }
 
+
     public void listenForIncomingMessages(SseEmitter emitter) {
         chatServer.onMessageReceived(message -> {
             try {

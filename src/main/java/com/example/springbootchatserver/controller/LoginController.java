@@ -24,20 +24,42 @@ public class LoginController {
         return "login";
     }
 
-    /*
+
     // Handle login requests
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         Model model) {
 
-       // if (userService.authenticate(username, password)) {
-          //  return "redirect:/chat.html"; // Redirect to chat.html upon successful login
-       // } else {
-        //    model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
-       //     return "redirect:/login.html"; // Return to login page on failure
-      //  }
-   // }
+        if (userService.authenticate(username, password)) {
+            return "redirect:/"; // Redirect to chat.html upon successful login
+         } else {
+            model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
+            return "redirect:/login"; // Return to login page on failure
+        }
+    }
 
-     */
+    @GetMapping("/register")
+    public String registerPage(){
+        return "registeruser";
+    }
+
+    //Handle sign up requst
+    @PostMapping("/registeruser")
+    public String registeruser(@RequestParam ("username") String username,
+                               @RequestParam ("password") String password,
+                               Model model) {
+
+
+        if (userService.registerUser(username, password)) {
+            return "redirect:/login";
+
+        } else {
+            model.addAttribute("Error", "Bruger er eksitere allerede");
+            return "registeruser";
+    }
+
+    }
+
+
 }
