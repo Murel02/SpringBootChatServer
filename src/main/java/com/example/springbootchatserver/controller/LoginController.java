@@ -31,11 +31,13 @@ public class LoginController {
                         @RequestParam("password") String password,
                         Model model) {
 
-        if (userService.authenticate(username, password)) {
-            return "redirect:/chat.html"; // Redirect to chat.html upon successful login
-        } else {
-            model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
-            return "redirect:/login.html"; // Return to login page on failure
-        }
-    }
+       // if (userService.authenticate(username, password)) {
+          //  return "redirect:/chat.html"; // Redirect to chat.html upon successful login
+       // } else {
+        //    model.addAttribute("error", "Ugyldigt brugernavn eller adgangskode");
+       //     return "redirect:/login.html"; // Return to login page on failure
+      //  }
+   // }
+
+     */
 }
