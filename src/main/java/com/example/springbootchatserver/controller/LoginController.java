@@ -20,6 +20,7 @@ public class LoginController {
         return "login";
     }
 
+    /*
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
@@ -33,6 +34,8 @@ public class LoginController {
             return "login";
         }
     }
+
+     */
     
     @PostMapping("/register")
     public String register(@RequestParam("username") String username,

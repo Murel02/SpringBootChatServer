@@ -1,66 +1,61 @@
 package com.example.springbootchatserver.server;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+@Component
 public class ChatServer {
-    private final int port;
-    private final int threadPoolSize = 10;
-    private Set<ClientHandler> clientHandlers = new HashSet<>();
-    private ExecutorService pool;
+    private List<ClientHandler> clients = new ArrayList<>();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public ChatServer(int port) {
-        this.port = port;
-        pool = Executors.newFixedThreadPool(threadPoolSize);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                System.out.println("Shutting down server...");
-                pool.shutdown();
-                pool.awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                System.err.println("Server shutdown interrupted: " + e.getMessage());
-            }
-        }));
-    }
-
-    public void start() {
+    public void startServer(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server is listening on port " + port);
-
             while (true) {
-                Socket socket = serverSocket.accept();
-                System.out.println("New client connected.");
+                Socket clientSocket = serverSocket.accept();
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                clients.add(clientHandler);
 
-                ClientHandler clientHandler = new ClientHandler(socket, this);
-                clientHandlers.add(clientHandler);
-                pool.execute(clientHandler);
+                // Set up a message listener to handle messages from this client
+                clientHandler.setMessageListener(message -> {
+                    System.out.println("Received message: " + message);
+                    broadcastMessage(message);  // Broadcast the message to all clients
+                });
+
+                // Start the client handler in a new thread
+                executorService.submit(clientHandler);
             }
         } catch (IOException e) {
-            System.err.println("Server I/O error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void removeClient(ClientHandler clientHandler) {
-        clientHandlers.remove(clientHandler);
-        System.out.println("A client has disconnected");
-    }
-
-    public synchronized void broadcastMessage(String message) {
-        if (message != null && !message.trim().isEmpty()) {
-            for (ClientHandler clientHandler : clientHandlers) {
-                clientHandler.sendMessage(message);
-            }
-
+    // Broadcast a message to all connected clients
+    public void broadcastMessage(String message) {
+        System.out.println("Broadcasting message: " + message);
+        for (ClientHandler client : clients) {
+            client.sendMessage(message);  // Send message to each client
         }
     }
+
+    public void onMessageReceived(Consumer<String> listener){
+        for (ClientHandler client : clients){
+            client.setMessageListener(listener);
+        }
+    }
+
     public static void main(String[] args) {
-        ChatServer chatServer = new ChatServer(5000);
-        chatServer.start();
+     //   ChatServer chatServer = new ChatServer();
+     //   chatServer. startServer(5000);
     }
 }

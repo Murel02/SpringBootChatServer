@@ -10,25 +10,35 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ChatController {
 
     @Autowired
     private ChatService chatService;
+    private final List<String> chatHistory = new ArrayList<>();
+    private final List<SseEmitter> emitters = new ArrayList<>();
 
-    @GetMapping("/chat")
+    @GetMapping("/")
     public String chatPage(HttpSession session, Model model){
-        String username = (String) session.getAttribute("username");
-        if (username != null){
-            model.addAttribute("username", username);
-            return "chat";
-        } else {
-            return "redirect:/login";
-        }
+       return "chat";
     }
+
+    @GetMapping("/stream")
+    public SseEmitter stream() {
+        SseEmitter emitter = new SseEmitter();
+        chatService.listenForIncomingMessages(emitter);  // Listen for new messages and send them via SSE
+        emitter.onCompletion(() -> emitters.remove(emitter));
+        emitter.onTimeout(() -> emitters.remove(emitter));
+        return emitter;
+    }
+
 
     /*
     The method runs when you press the send button
@@ -37,11 +47,11 @@ public class ChatController {
     The user is sent to the chat page
      */
     @PostMapping("/send")
-    public String sendMessage(@RequestParam("message") String message, User user, Model model){
-        if (message != null && !message.trim().isEmpty()){
-            ChatMessage chatMessage = new ChatMessage(user.getUsername(), LocalDateTime.now(), "TEXT", message);
-            chatService.handleMessage(chatMessage.toString());
+    public String sendMessage(@RequestParam("message") String message, Model model) {
+        if (message != null && !message.trim().isEmpty()) {
+            chatService.sendMessageToServer(message);  // Send message to the chat server
         }
-        return "redirect:/chat";
+        return "redirect:/";  // Redirect to chat page
     }
+
 }

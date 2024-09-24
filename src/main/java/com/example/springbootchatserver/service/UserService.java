@@ -1,7 +1,7 @@
 package com.example.springbootchatserver.service;
 
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -13,9 +13,8 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private Map<String, String> users = new HashMap<>();
-    private final String filePath = "users.txt";
+    private final String filePath = "src/users.txt";
 
 
 
@@ -50,16 +49,10 @@ public class UserService {
        }
     }
 
-    public boolean authenticate(String username, String password){
-        String hashedPassword = users.get(username);
-        return hashedPassword != null && passwordEncoder.matches(password, hashedPassword);
-    }
-
     public boolean registerUser(String username, String password){
         if (users.containsKey(username)){
             return false;
         } else {
-            String harshedPassword = passwordEncoder.encode(password);
             users.put(username, password);
             saveUsersToFile();
             return true;

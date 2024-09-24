@@ -1,19 +1,14 @@
 package com.example.springbootchatserver.config;
 
-
-import com.example.springbootchatserver.model.User;
+import com.example.springbootchatserver.server.ChatServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UserConfig {
-
-
-
+public class ChatServerConfig {
 
     @Bean
-    public User user(){
-        return new User(1,"Lone","1230");
-
+    public ChatServer chatServer(){
+        return new ChatServer();
     }
 }

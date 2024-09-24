@@ -1,34 +1,44 @@
 package com.example.springbootchatserver.service;
 
-import com.example.springbootchatserver.client.ChatClient;
-import com.example.springbootchatserver.model.ChatMessage;
 import com.example.springbootchatserver.server.ChatServer;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ChatService {
 
-    private final ChatClient chatClient;
 
     @Autowired
-    public ChatService(ChatClient chatClient){
-        this.chatClient = chatClient;
+    private ChatServer chatServer;
+
+    @Value("${chat.server.port}")
+    private int port;
+
+
+    @PostConstruct
+    public void init(){
+        new Thread(() -> chatServer.startServer(port)).start();
     }
 
-    public void handleMessage(String message){
-       try {
-           chatClient.sendMessage(message);
-           String response = chatClient.receiveMessage();
-       }catch (IOException e){
-           e.printStackTrace();
-       }
+
+    public void sendMessageToServer(String message){
+        chatServer.broadcastMessage(message);
     }
 
-    public List<String> getMessages(){
-        return new ArrayList<>();
+    public void listenForIncomingMessages(SseEmitter emitter) {
+        chatServer.onMessageReceived(message -> {
+            try {
+                System.out.println("Sending message to emitter: " + message);
+                emitter.send(SseEmitter.event().data(message));
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+            }
+        });
     }
+
 }

@@ -1,62 +1,61 @@
 package com.example.springbootchatserver.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 public class ClientHandler implements Runnable {
-    private final Socket socket;
-    private final ChatServer server;
-    private PrintWriter writer;
+    private final Socket clientSocket;
+    private BufferedReader in;
+    private PrintWriter out;
+    private Consumer<String> messageListener; // A listener for incoming messages
 
-    public ClientHandler(Socket socket, ChatServer server) {
-        this.socket = socket;
-        this.server = server;
+    public ClientHandler(Socket socket) {
+        this.clientSocket = socket;
+        try {
+            // Initialize input and output streams for communication
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    /*
-    BufferedReader reads incoming messages from the socket object
-    The while loop goes through all incoming messages skipping the empty ones
-    And then broadcasts the messages to all connected clients
-    The "finally" is used to disconnect a client in case the client disconnects or an error
-     */
     @Override
     public void run() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            writer = new PrintWriter(socket.getOutputStream(), true);
-
-            String message;
-            while ((message = reader.readLine()) != null) {
-                if (message.trim().isEmpty()) {
-                    continue;  // Skip empty messages
+        String message;
+        try {
+            // Continuously listen for messages from the client
+            while ((message = in.readLine()) != null) {
+                if (messageListener != null) {
+                    // Notify the server that a message has been received
+                    messageListener.accept(message);
                 }
-                System.out.println("Received: " + message);
-                server.broadcastMessage(message);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            server.removeClient(this);
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            closeConnection();
         }
     }
 
-    /*
-    Checks if the writer exists
-    Sends a message with writer.println(message)
-     */
+    public void setMessageListener(Consumer<String> listener) {
+        this.messageListener = listener; // Assign the listener for incoming messages
+    }
+
+    // Sends a message to the client
     public void sendMessage(String message) {
-        if (writer != null) {
-            writer.println(message);
-            writer.flush();
-        } else {
-            System.out.println("Error: No connection to server");
+        out.println(message);  // Send message to the client
+    }
+
+    // Close the connection
+    private void closeConnection() {
+        try {
+            in.close();
+            out.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
