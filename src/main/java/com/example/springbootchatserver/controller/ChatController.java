@@ -45,7 +45,7 @@ public class ChatController {
         if (username == null){
             throw new IllegalStateException("User must be logged in to acces this endpoint.");
         }
-       SseEmitter emitter = new SseEmitter(-1L);
+       SseEmitter emitter = new SseEmitter(60 * 60 * 1000L);
        chatService.listenForIncomingMessages(emitter);
         return emitter;
     }
@@ -73,7 +73,7 @@ public class ChatController {
 
         //add the message to the session to track the last sent message
         session.setAttribute("lastSentMessage", newMessage);
-
+        System.out.println("recived message " + message );
         chatService.broadcastMessage(newMessage);
         return "redirect:/chat";  // Redirect to chat page
     }

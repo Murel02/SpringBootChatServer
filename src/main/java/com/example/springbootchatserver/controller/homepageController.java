@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller // Angiver, at denne klasse er en controller
-public class HomepageController {
+class HomepageController {
 
     @GetMapping("/")
     public String rootRedirect(){
