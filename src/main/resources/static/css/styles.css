@@ -1,259 +1,261 @@
-/* Global Styles */
+/* Globale Stilarter */
 * {
-    box-sizing: border-box;
+    box-sizing: border-box; /* Gør, at padding og margin tælles med i elementets samlede bredde og højde */
 }
 
 body, html {
-    background-color: #b233ff;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    margin: 0; /* Fjerner standard margin */
+    font-family: Arial, sans-serif; /* Sætter skrifttypen til Arial */
+    height: 100vh; /* Sætter højden til 100% af viewport-højden */
+    overflow: hidden; /* Skjuler overskydende indhold */
 }
 
-/* Button Styling */
+/* Knapstyling */
 button, .header button, .support-button {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    border-radius: 10px;
-    padding: 10px 15px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    border: 2px solid pink; /* Sætter kantfarven til pink */
+    border-radius: 10px; /* Runding af kanterne */
+    padding: 10px 15px; /* Indvendig afstand på knappen */
+    color: white; /* Sætter tekstfarven til hvid */
+    font-size: 16px; /* Sætter skriftstørrelsen til 16px */
+    cursor: pointer; /* Ændrer cursor til pointer ved hover */
+    transition: background-color 0.3s ease; /* Tilføjer en overgangseffekt til baggrundsfarven */
 }
 
 button:hover, .header button:hover, .support-button:hover {
-    background-color: #a52bc5;
+    background-color: #a52bc5; /* Ændrer baggrundsfarven ved hover */
 }
 
 /* Header */
 .header {
-    background-color: #337aff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 40px;
-    position: relative;
+    background-color: #337aff; /* Sætter baggrundsfarven til blå */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    align-items: center; /* Centerer indholdet vertikalt */
+    justify-content: space-between; /* Fordeler pladsen mellem indholdet */
+    padding: 10px 40px; /* Indvendig afstand i headeren */
+    position: relative; /* Gør positionen relativ for at kunne styre overordnede elementer */
 }
 
 .header .buttons {
-    display: flex;
-    gap: 15px;
+    display: flex; /* Brug flexbox til at arrangere knapperne */
+    gap: 15px; /* Mellemrum mellem knapperne */
 }
 
-/* Hero Section */
+/* Hero Sektion */
 .hero {
-    background-image: url('../image/stockPhoto.jpg');
-    background-size: cover;
-    background-position: center;
-    height: calc(100vh - 80px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+    background-image: url('../image/stockPhoto.jpg'); /* Sætter baggrundsbilledet */
+    background-size: cover; /* Dækker hele sektionen med billedet */
+    background-position: center; /* Centerer baggrundsbilledet */
+    height: calc(100vh - 80px); /* Sætter højden, så den tager 100vh minus 80px */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    align-items: center; /* Centerer indholdet vertikalt */
+    justify-content: center; /* Centerer indholdet horisontalt */
+    position: relative; /* Gør positionen relativ for overordnede elementer */
 }
 
 .hero h2 {
-    color: white;
-    font-size: 48px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: white; /* Sætter teksten til hvid */
+    font-size: 48px; /* Sætter skriftstørrelsen til 48px */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Tilføjer skyggeeffekt til teksten */
 }
 
-/* Support Section */
+/* Support Sektion */
 .support-hero {
-    background-color: #337aff;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 20px;
+    background-color: #337aff; /* Sætter baggrundsfarven til blå */
+    height: 100vh; /* Sætter højden til 100% af viewport-højden */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    flex-direction: column; /* Arrangerer indholdet i en kolonne */
+    align-items: center; /* Centerer indholdet horisontalt */
+    justify-content: center; /* Centerer indholdet vertikalt */
+    color: white; /* Sætter tekstfarven til hvid */
+    text-align: center; /* Centerer teksten */
+    padding: 20px; /* Indvendig afstand */
 }
 
 .support-text-box, .phone-box {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    border: 2px solid pink; /* Sætter kantfarven til pink */
+    padding: 20px; /* Indvendig afstand */
+    border-radius: 10px; /* Runding af kanterne */
+    margin-bottom: 20px; /* Margin under boksen */
 }
 
 .support-text-box h1, .phone-box h2 {
-    font-size: 42px;
-    margin: 0;
+    font-size: 42px; /* Sætter skriftstørrelsen til 42px */
+    margin: 0; /* Fjerner margin */
 }
 
 .support-text-box p, .phone-box p {
-    font-size: 18px;
-    margin-top: 10px;
+    font-size: 18px; /* Sætter skriftstørrelsen til 18px */
+    margin-top: 10px; /* Margin ovenfor teksten */
 }
-
-/* Login Page */
+/* Login Side */
 .login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    flex-direction: column; /* Arrangerer indholdet i en kolonne */
+    align-items: center; /* Centerer indholdet horisontalt */
+    justify-content: center; /* Centerer indholdet vertikalt */
+    height: 100vh; /* Sætter højden til 100% af viewport-højden */
 }
 
 /* Login Container */
 .login-container {
-    background-color: rgba(51, 122, 255, 0.9);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    width: 300px;
-    text-align: center;
+    background-color: rgba(51, 122, 255, 0.9); /* Sætter baggrundsfarven til blå med 90% opacitet */
+    padding: 40px; /* Indvendig afstand i containeren */
+    border-radius: 10px; /* Runding af kanterne */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Tilføjer skyggeeffekt til containeren */
+    width: 300px; /* Sætter bredden på containeren */
+    text-align: center; /* Centerer teksten inden i containeren */
 }
 
 .login-container h1 {
-    margin-bottom: 20px;
-    color: white;
+    margin-bottom: 20px; /* Margin under overskriften */
+    color: white; /* Sætter tekstfarven til hvid */
 }
 
 .login-container label {
-    display: block;
-    margin-bottom: 5px;
-    color: white;
-    text-align: left;
+    display: block; /* Gør label til blok for at tage hele bredden */
+    margin-bottom: 5px; /* Margin under labelen */
+    color: white; /* Sætter tekstfarven til hvid */
+    text-align: left; /* Venstrestiller teksten */
 }
 
 .login-container input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 2px solid transparent;
-    border-radius: 5px;
-    transition: border 0.3s ease;
+    width: 100%; /* Sætter input-feltets bredde til 100% */
+    padding: 10px; /* Indvendig afstand i input-feltet */
+    margin-bottom: 15px; /* Margin under input-feltet */
+    border: 2px solid transparent; /* Sætter en gennemsigtig kant */
+    border-radius: 5px; /* Runding af kanterne */
+    transition: border 0.3s ease; /* Tilføjer en overgangseffekt til kanten */
 }
 
 .login-container input:focus {
-    border: 2px solid pink;
-    outline: none;
+    border: 2px solid pink; /* Ændrer kantfarven til pink ved fokus */
+    outline: none; /* Fjerner standard outline ved fokus */
 }
 
-/* Login Button */
+/* Login Knap */
 .login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #b233ff;
-    border: 2px solid pink;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    width: 100%; /* Sætter knapens bredde til 100% */
+    padding: 10px; /* Indvendig afstand i knappen */
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    border: 2px solid pink; /* Sætter kantfarven til pink */
+    border-radius: 5px; /* Runding af kanterne */
+    color: white; /* Sætter tekstfarven til hvid */
+    font-size: 16px; /* Sætter skriftstørrelsen til 16px */
+    cursor: pointer; /* Ændrer cursor til pointer ved hover */
 }
 
 .login-container button:hover {
-    background-color: #a52bc5;
+    background-color: #a52bc5; /* Ændrer baggrundsfarven ved hover */
 }
 
 /* Login Header */
 .login-header {
-    background-color: #b233ff;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    justify-content: center; /* Centerer indholdet horisontalt */
+    padding: 20px 0; /* Indvendig afstand i headeren */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Responsivt Design */
+@media (max-width: 768px) { /* For skærme med en maksimal bredde på 768px */
     .login-container {
-        width: 90%;
+        width: 90%; /* Sætter bredden til 90% af skærmbredden */
     }
 
     .hero h2 {
-        font-size: 36px;
+        font-size: 36px; /* Sætter skrifttypestørrelsen til 36px for overskriften i hero-sektionen */
     }
 
     .header {
-        padding: 10px 20px;
+        padding: 10px 20px; /* Justerer padding i headeren */
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { /* For skærme med en maksimal bredde på 480px */
     .login-container {
-        width: 90%;
-        padding: 20px;
+        width: 90%; /* Sætter bredden til 90% af skærmbredden */
+        padding: 20px; /* Justerer padding i login-containeren */
     }
 }
-/* Style for the chat container */
+
+/* Stil til chat-container */
 .chat-container {
-    background-color: rgba(51, 122, 255, 0.9);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    width: 600px; /* Increased the width from 400px to 600px */
-    max-width: 100%;
-    margin: 0 auto; /* Center the container horizontally */
-    display: flex;
-    flex-direction: column; /* Allows the content to stack vertically */
-    justify-content: center;
-    align-items: center;
-    height: 80vh; /* Set a height for proper vertical centering */
+    background-color: rgba(51, 122, 255, 0.9); /* Sætter baggrundsfarven til blå med 90% opacitet */
+    padding: 40px; /* Indvendig afstand i chat-containeren */
+    border-radius: 10px; /* Runding af kanterne */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Tilføjer skyggeeffekt til containeren */
+    text-align: center; /* Centerer teksten i containeren */
+    width: 600px; /* Øger bredden fra 400px til 600px */
+    max-width: 100%; /* Sætter maksimal bredde til 100% */
+    margin: 0 auto; /* Centerer containeren horisontalt */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    flex-direction: column; /* Arrangerer indholdet i en kolonne */
+    justify-content: center; /* Centerer indholdet vertikalt */
+    align-items: center; /* Centerer indholdet horisontalt */
+    height: 80vh; /* Sætter en højde for korrekt vertikal centrering */
 }
 
-/* Chat box */
+/* Chatboks */
 #chatBox {
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    padding: 20px;
-    width: 100%; /* Ensure the chat box fills the container */
-    height: 400px; /* Increased the height to make it more spacious */
-    overflow-y: auto;
+    background-color: #e0e0e0; /* Sætter baggrundsfarven til lys grå */
+    border-radius: 5px; /* Runding af kanterne */
+    padding: 20px; /* Indvendig afstand i chatboksen */
+    width: 100%; /* Sikrer, at chatboksen fylder hele containeren */
+    height: 400px; /* Øger højden for at gøre den mere rummelig */
+    overflow-y: auto; /* Tillader vertikal scroll, hvis indholdet overskrider højden */
 }
 
-/* Individual message style */
+/* Individuel besked stil */
 #chatBox li {
-    list-style: none;
-    padding: 5px 0;
-    color: black;
-    font-size: 16px;
-    text-align: left;
+    list-style: none; /* Fjerner punkttegn fra listeelementerne */
+    padding: 5px 0; /* Margin omkring hvert listeelement */
+    color: black; /* Sætter tekstfarven til sort */
+    font-size: 16px; /* Sætter skrifttypestørrelsen til 16px */
+    text-align: left; /* Venstrestiller teksten */
 }
 
-/* Message input box */
+/* Besked inputboks */
 .input-group {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    margin-top: 20px; /* Margin over inputgruppen */
+    display: flex; /* Brug flexbox til at arrangere indholdet */
+    justify-content: space-between; /* Placerer indholdet med mellemrum imellem */
+    width: 100%; /* Sikrer, at inputgruppen fylder hele bredden */
 }
 
 #messageInput {
-    flex: 1;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-right: 10px;
+    flex: 1; /* Gør inputfeltet fleksibelt og udvider det */
+    border-radius: 5px; /* Runding af kanterne */
+    border: 1px solid #ccc; /* Sætter en grå kant omkring inputfeltet */
+    padding: 10px; /* Indvendig afstand i inputfeltet */
+    margin-right: 10px; /* Margin til højre for inputfeltet */
 }
 
+/* Knap for besked */
 button.btn-primary {
-    background-color: #b233ff;
-    border: 2px solid pink;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    background-color: #b233ff; /* Sætter baggrundsfarven til lilla */
+    border: 2px solid pink; /* Sætter kantfarven til pink */
+    border-radius: 5px; /* Runding af kanterne */
+    color: white; /* Sætter tekstfarven til hvid */
+    font-size: 16px; /* Sætter skrifttypestørrelsen til 16px */
+    cursor: pointer; /* Ændrer cursor til pointer ved hover */
 }
 
 button.btn-primary:hover {
-    background-color: #a52bc5;
+    background-color: #a52bc5; /* Ændrer baggrundsfarven ved hover */
 }
 
-/* Chat Room heading */
+/* Chatrum overskrift */
 .chat-room-heading {
-    color: white;
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    text-align: center;
+    color: white; /* Sætter tekstfarven til hvid */
+    font-size: 24px; /* Sætter skrifttypestørrelsen til 24px */
+    margin-bottom: 20px; /* Margin under overskriften */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Tilføjer skyggeeffekt til teksten */
+    width: 100%; /* Sætter bredden til 100% */
+    text-align: center; /* Centerer teksten */
 }
+
 
 

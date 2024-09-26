@@ -6,63 +6,65 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 @Component
 public class ChatServer {
+    // Liste til at holde styr på alle tilsluttede klienter (ClientHandler objekter)
     private List<ClientHandler> clients = new ArrayList<>();
+    // ExecutorService til at håndtere klientforbindelser i separate tråde
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     /*
-    This creates a socket that listens for incoming connections
-    When a client connects a new ClientHandler object is created
-    It listens for messages from a client and gives it to a broadcast method
-    that sends the message to all connected clients
-     */
+    Opretter en server socket, der lytter efter indkommende forbindelser.
+    Når en klient tilslutter sig, oprettes et nyt ClientHandler-objekt, som
+    lytter efter beskeder fra klienten og sender dem videre til en broadcast-metode,
+    der sender beskeden til alle tilsluttede klienter.
+    */
     public void startServer(int port) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            // Lytter kontinuerligt efter nye klientforbindelser
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
+                Socket clientSocket = serverSocket.accept(); // Accepterer en ny klientforbindelse
+                ClientHandler clientHandler = new ClientHandler(clientSocket); // Opretter en ClientHandler til klienten
+                clients.add(clientHandler); // Tilføjer klienten til listen over tilsluttede klienter
 
-                // Set up a message listener to handle messages from this client
+                // Indstiller en besked-lytter til at håndtere beskeder fra denne klient
                 clientHandler.setMessageListener(message -> {
-                    System.out.println("Broadcasting message from client: " + message);
-                    broadcastMessage(message);  // Broadcast the message to all clients
+                    System.out.println("Udsender besked fra klient: " + message);
+                    broadcastMessage(message);  // Sender beskeden til alle tilsluttede klienter
                 });
 
-                // Start the client handler in a new thread
+                // Starter klienthandleren i en ny tråd
                 executorService.submit(clientHandler);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Udskriver fejl hvis noget går galt
         }
     }
 
-    // Broadcast a message to all connected clients
+    // Metode til at sende en besked til alle tilsluttede klienter (broadcast)
     public void broadcastMessage(String message) {
-        System.out.println("Broadcasting message: " + message);
+        System.out.println("Udsender besked: " + message);
         for (ClientHandler client : clients) {
-            client.sendMessage(message);  // Send message to each client
+            client.sendMessage(message);  // Sender beskeden til hver enkelt klient
         }
     }
 
-    public void onMessageReceived(Consumer<String> listener){
-        System.out.println("Setting message listener for all clients");
-        for (ClientHandler client : clients){
-            client.setMessageListener(listener);
+    // Metode til at lytte efter beskeder fra alle klienter
+    public void onMessageReceived(Consumer<String> listener) {
+        System.out.println("Opsætter besked-lytter for alle klienter");
+        for (ClientHandler client : clients) {
+            client.setMessageListener(listener); // Indstiller besked-lytter for hver klient
         }
     }
 
+    // main-metode til at starte serveren (kan aktiveres når det er nødvendigt)
     public static void main(String[] args) {
-     //   ChatServer chatServer = new ChatServer();
-     //   chatServer. startServer(5000);
+        // ChatServer chatServer = new ChatServer();
+        // chatServer.startServer(5000);
     }
 }

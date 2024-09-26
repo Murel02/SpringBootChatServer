@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!-- Angiver sprog som engelsk -->
 <head>
-    <meta charset="UTF-8">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="icon" href="/image/favicon.png" type="image/x-icon">
+    <meta charset="UTF-8"> <!-- Sætter tegnsætning til UTF-8 -->
+    <title>Registration Form</title> <!-- Titel på fanen -->
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link til CSS-stilen -->
+    <link rel="icon" href="/image/favicon.png" type="image/x-icon"> <!-- Favicon til fanen -->
 </head>
-<body class="login-page">
-<div class="login-header">
-    <h1 style="color: white; cursor: pointer;" onclick="window.location.href='/home'">Chat Today</h1>
+<body class="login-page"> <!-- Angiver body-klasse som login-page for at anvende specifik styling -->
+<div class="login-header"> <!-- Header-sektion for registreringssiden -->
+    <h1 style="color: white; cursor: pointer;" onclick="window.location.href='/home'">Chat Today</h1> <!-- Titel der linker til startsiden -->
 </div>
 
-<div class="login-container">
-    <h1>Register User</h1>
+<div class="login-container"> <!-- Container til registreringsformularen -->
+    <h1>Register User</h1> <!-- Overskrift for registrerings-sektionen -->
 
-    <!-- Error message (Thymeleaf will display this if there's an error in model) -->
-    <div th:if="${error}" style="color: red;">
-        <p th:text="${error}"></p>
+    <!-- Fejlmeddelelse (Thymeleaf vil vise dette, hvis der er en fejl i modellen) -->
+    <div th:if="${error}" style="color: red;"> <!-- Viser fejlmeddelelse, hvis der er en fejl -->
+        <p th:text="${error}"></p> <!-- Fejlmeddelelse fra model -->
     </div>
 
-    <form action="/registeruser" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Username" name="username" required>
+    <form action="/registeruser" method="post"> <!-- Formular til registrering, sender data til /registeruser -->
+        <label for="username">Username:</label> <!-- Etiket til brugernavn -->
+        <input type="text" id="username" placeholder="Username" name="username" required> <!-- Inputfelt til brugernavn, krævet -->
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" placeholder="Password" name="password" required>
+        <label for="password">Password:</label> <!-- Etiket til adgangskode -->
+        <input type="password" id="password" placeholder="Password" name="password" required> <!-- Inputfelt til adgangskode, krævet -->
 
-        <button type="submit">Register</button>
+        <button type="submit">Register</button> <!-- Knap til at sende registreringsformularen -->
     </form>
 </div>
 </body>

@@ -4,9 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller // Angiver, at denne klasse er en controller
-public class HomepageController {
+class HomepageController {
 
-    @GetMapping("/") // Kortlægger root URL til homepage.html
+    @GetMapping("/")
+    public String rootRedirect(){
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home") // Kortlægger root URL til homepage.html
     public String homepage() {
         return "homepage"; // Returnerer navnet på HTML-filen uden .html
     }

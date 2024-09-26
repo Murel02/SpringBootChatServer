@@ -3,76 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Room</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="icon" href="/image/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Link til CSS-stilen -->
+    <link rel="icon" href="/image/favicon.png" type="image/x-icon"> <!-- Favicon til fanen -->
 </head>
 <body>
 <div class="chat-header">
-    <h1>Chat Today</h1>
+    <h1>Chat Today</h1> <!-- Titel for chatrum -->
 </div>
 
 <div class="chat-container">
-    <h1 class="chat-room-heading">Chat Room</h1>
+    <h1 class="chat-room-heading">Chat Room</h1> <!-- Overskrift for chatrummet -->
 
     <div id="chatBox" class="chat-box">
         <ul id="messageList">
-            <!-- Iterate over the messages and display them -->
+            <!-- Itererer over beskederne og viser dem -->
             <li th:each="message : ${messages}">
-                <span th:text="${message.toString()}"></span>
+                <span th:text="${message.toString()}"></span> <!-- Viser indholdet af beskeden -->
             </li>
         </ul>
     </div>
 
     <form id="messageForm">
         <div class="input-group">
-            <input type="text" class="form-control" id="messageInput" name="message" placeholder="Type a message">
-            <div id="emojiPickerContainer"></div>
-            <button class="btn btn-primary" type="submit">Send</button>
+            <input type="text" id="recipient" name="recipient" placeholder="Enter recipient's username (optional)">
+            <input type="text" class="form-control" id="messageInput" name="message" placeholder="Type a message"> <!-- Inputfelt til at skrive beskeder -->
+            <div id="emojiPickerContainer"></div> <!-- Container til emoji-vælger -->
+            <button class="btn btn-primary" type="submit">Send</button> <!-- Knap til at sende beskeder -->
         </div>
     </form>
 </div>
 
 <script>
     const emojiPickerContainer = document.getElementById('emojiPickerContainer');
-    const emojiPicker = document.createElement('emoji-picker');
-    emojiPickerContainer.appendChild(emojiPicker);
+    const emojiPicker = document.createElement('emoji-picker'); // Opretter en emoji-vælger
+    emojiPickerContainer.appendChild(emojiPicker); // Tilføjer emoji-vælgeren til containeren
 
     const messageInput = document.getElementById('messageInput');
     emojiPicker.addEventListener('emoji-click', event => {
-        messageInput.value += event.detail.unicode;
+        messageInput.value += event.detail.unicode; // Tilføjer den valgte emoji til inputfeltet
     });
 
     const chatBox = document.getElementById('chatBox');
     const messageList = document.getElementById('messageList');
-    const eventSource = new EventSource("/stream");
+    const eventSource = new EventSource("/stream"); // Opretter en EventSource for at modtage beskeder
 
     eventSource.onmessage = function(event) {
-        const newMessage = document.createElement('li');
-        newMessage.textContent = event.data;
-        messageList.appendChild(newMessage);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        const newMessage = document.createElement('li'); // Opretter et nyt listeelement for den nye besked
+        newMessage.textContent = event.data; // Indstiller indholdet til den modtagne besked
+        messageList.appendChild(newMessage); // Tilføjer den nye besked til beskedlisten
+        chatBox.scrollTop = chatBox.scrollHeight; // Ruller chatboksen til bunden
     };
 
-    // Handle form submission using AJAX to prevent page reload
+    // Håndterer formularindsendelse ved hjælp af AJAX for at undgå sideopdatering
     const messageForm = document.getElementById('messageForm');
     messageForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Forhindrer standard formularindsendelse
         const message = messageInput.value;
 
         fetch('/send', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded', // Sætter header for indholdstype
             },
             body: new URLSearchParams({
-                message: message
+                message: message // Sender beskeden som URL-parameter
             })
         }).then(response => {
             if (response.ok) {
-                messageInput.value = ''; // Clear the input field
+                messageInput.value = ''; // Tømmer inputfeltet efter sending
             }
         }).catch(error => {
-            console.error('Error sending message:', error);
+            console.error('Error sending message:', error); // Logger fejl ved sending
         });
     });
 </script>

@@ -1,5 +1,6 @@
 package com.example.springbootchatserver.controller;
 
+// Importerer nødvendige klasser
 import com.example.springbootchatserver.model.ChatMessage;
 import com.example.springbootchatserver.model.User;
 import com.example.springbootchatserver.service.ChatService;
@@ -18,64 +19,91 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+// Angiver, at denne klasse er en controller, der håndterer HTTP-forespørgsler
 public class ChatController {
 
-    @Autowired
+    // Automatisk injektion af chatService for at kunne bruge dens metoder
     private ChatService chatService;
 
+    @Autowired
+    public ChatController(ChatService chatService){
+        this.chatService = chatService;
+    }
+
     @GetMapping("/chat")
-    public String chatPage(HttpSession session, Model model){
-        //check if the user is loggged in
+    // Håndterer GET-forespørgsler til "/chat"-siden
+    public String chatPage(HttpSession session, Model model) {
+        // Tjekker om brugeren er logget ind
         String username = (String) session.getAttribute("username");
 
-        if (username == null){
+        if (username == null) {
+            // Hvis brugeren ikke er logget ind, sendes de til login-siden
             return "redirect:/login";
         }
 
+        // Henter chatbeskederne fra chatService
         List<ChatMessage> messages = chatService.getChatMessages();
+        // Tilføjer beskederne til modellen, så de kan vises i HTML-filen
         model.addAttribute("messages", messages);
-       return "chat";
+        return "chat"; // Returnerer chat-siden
     }
-
 
     @GetMapping("/stream")
+    // Håndterer GET-forespørgsler til "/stream", som er en Server-Sent Events (SSE) endpoint
     public SseEmitter stream(HttpSession session) {
-        //Check if the user is logged in
+        // Tjekker om brugeren er logget ind
         String username = (String) session.getAttribute("username");
-        if (username == null){
-            throw new IllegalStateException("User must be logged in to acces this endpoint.");
+        if (username == null) {
+            // Hvis brugeren ikke er logget ind, kastes der en fejl
+            throw new IllegalStateException("User must be logged in to access this endpoint.");
         }
-       SseEmitter emitter = new SseEmitter(60 * 60 * 1000L);
-       chatService.listenForIncomingMessages(emitter);
-        return emitter;
+
+        // Opretter en SseEmitter med en timeout på 1 time (60 * 60 * 1000 ms)
+        SseEmitter emitter = new SseEmitter(60 * 60 * 1000L);
+        // Lytter til indkommende beskeder via chatService
+        chatService.listenForIncomingMessages(session.getAttribute("username").toString() ,emitter);
+        return emitter; // Returnerer emitteren
     }
 
-
     /*
-    The method runs when you press the send button
-    The method uses a message from an HTML file using @RequestParam and a Model object
-    If the message is not null or is not an empty message it makes a ChatMessage object using a username from a User object, the current time and a message from the HTML file
-    The user is sent to the chat page
-     */
+    Metoden kører, når man trykker på send-knappen.
+    Den bruger en besked fra en HTML-fil via @RequestParam og et Model-objekt.
+    Hvis beskeden ikke er null eller tom, oprettes et ChatMessage-objekt med brugernavnet fra en User-objekt, den aktuelle tid og beskeden fra HTML-filen.
+    Brugeren sendes derefter tilbage til chat-siden.
+    */
     @PostMapping("/send")
-    public String sendMessage(@RequestParam("message") String message, HttpSession session) {
-        //Retrieve username from the session
+    // Håndterer POST-forespørgsler til "/send" for at sende en besked
+    public String sendMessage(@RequestParam("message") String message, @RequestParam(required = false) String recipient, HttpSession session) {
+        // Henter brugernavnet fra sessionen
         String username = (String) session.getAttribute("username");
 
-        if (username == null){
+        if (username == null) {
+            // Hvis brugeren ikke er logget ind, omdirigeres de til login-siden
             return "redirect:/login";
         }
 
+        // Opretter et tidsstempel med den aktuelle tid
         LocalDateTime timestamp = LocalDateTime.now();
+        // Definerer beskedtypen som tekst (TEXT)
         String type = "TEXT";
 
-        ChatMessage newMessage = new ChatMessage(username,timestamp,type,message);
+        // Opretter et nyt ChatMessage-objekt med brugernavn, tidsstempel, type og besked
+        ChatMessage newMessage = new ChatMessage(username, timestamp, type, message);
 
-        //add the message to the session to track the last sent message
+        // Tilføjer beskeden til sessionen for at holde styr på den sidst sendte besked
         session.setAttribute("lastSentMessage", newMessage);
-        System.out.println("recived message " + message );
-        chatService.broadcastMessage(newMessage);
-        return "redirect:/chat";  // Redirect to chat page
+        System.out.println("Modtaget besked: " + message);
+
+
+        if (recipient == null) {
+            // Sender beskeden til alle brugere via chatService
+            chatService.broadcastMessage(newMessage);
+        }else {
+            chatService.unicastMessage(newMessage, recipient);
+        }
+
+        return "redirect:/chat"; // Omdirigerer til chat-siden
     }
+
 
 }

@@ -1,66 +1,94 @@
 package com.example.springbootchatserver.service;
 
 import com.example.springbootchatserver.model.ChatMessage;
+import com.example.springbootchatserver.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class ChatService {
 
-    private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    // Liste til at gemme alle aktive SseEmitters (til forbindelser med klienter)
+    private final ConcurrentHashMap<String, SseEmitter> userEmitters = new ConcurrentHashMap<>();
+    // Liste til at gemme chatbeskeder, så de kan hentes senere (chat-historik)
     private final List<ChatMessage> chatHistory = new ArrayList<>();
 
-    // Method to retrieve the chat history
+    // Metode til at hente chat-historikken
     public List<ChatMessage> getChatMessages() {
-        return new ArrayList<>(chatHistory);
+        return new ArrayList<>(chatHistory); // Returnerer en kopi af chat-historikken
     }
 
-    // Method to listen for incoming messages
-    public void listenForIncomingMessages(SseEmitter emitter) {
-        emitters.add(emitter);
+    // Metode til at lytte efter indkommende beskeder
+    public void listenForIncomingMessages(String username, SseEmitter emitter) {
+        userEmitters.put(username, emitter); // Tilføj en ny emitter til listen over aktive forbindelser
 
-        // Handle emitter lifecycle events
+        // Håndter emitter-livscyklushændelser
         emitter.onCompletion(() -> {
-            emitters.remove(emitter);
-            System.out.println("Emitter completed and removed.");
+            userEmitters.remove(username); // Fjern emitteren, hvis den afsluttes
+            System.out.println("Emitter afsluttet og fjernet.");
         });
 
         emitter.onTimeout(() -> {
-            emitters.remove(emitter);
-            System.out.println("Emitter timed out and removed.");
+            userEmitters.remove(username); // Fjern emitteren, hvis den tidsudløber
+            System.out.println("Emitter tidsudløb og fjernet.");
         });
 
         emitter.onError(e -> {
-            emitters.remove(emitter);
-            System.err.println("Error with emitter: " + e.getMessage());
+            userEmitters.remove(username); // Fjern emitteren, hvis der opstår en fejl
+            System.err.println("Fejl med emitter: " + e.getMessage());
         });
     }
 
-    // Method to broadcast a message to all clients
+    // Metode til at sende en besked til alle klienter (broadcast)
     public void broadcastMessage(ChatMessage message) {
-        chatHistory.add(message); // Add the message to chat history
-        List<SseEmitter> deadEmitters = new ArrayList<>();
+        chatHistory.add(message); // Tilføj beskeden til chat-historikken
+        List<String> deadEmitters = new ArrayList<>(); // Liste til "døde" emitters
 
-        // Get the formatted message string
+        // Formater beskeden som en streng
         String formattedMessage = message.toString();
 
-        // Iterate over a copy of the emitters list to avoid ConcurrentModificationException
-        for (SseEmitter emitter : emitters) {
+        // Iterér over en kopi af emitters-listen for at undgå ConcurrentModificationException
+        userEmitters.forEach((username, emitter) -> {
             try {
                 // Send the formatted message string to each connected client
                 emitter.send(SseEmitter.event().data(formattedMessage));
             } catch (IOException e) {
-                deadEmitters.add(emitter); // Mark emitter for removal if an error occurs
-                System.err.println("Error broadcasting message to client: " + e.getMessage());
+                deadEmitters.add(username); // Mark emitter for removal if an error occurs
+                System.err.println("Error broadcasting message to user " + username + ": " + e.getMessage());
             }
-        }
+        });
 
-        // Remove the dead emitters
-        emitters.removeAll(deadEmitters);
+
+        // Fjern de "døde" emitters fra listen
+       deadEmitters.forEach(userEmitters::remove);
+    }
+
+    // Metode til at sende en privat besked (unicast) til en specifik bruger
+    public void unicastMessage(ChatMessage message, String recipient) {
+        chatHistory.add(message); // Optional: Add the message to chat history
+
+        String formattedMessage = message.toString();
+
+        SseEmitter targetEmitter = userEmitters.get(recipient); // Retrieve the emitter for the target user
+
+        if (targetEmitter != null) {
+            try {
+                // Send the formatted message string to the specific client
+                targetEmitter.send(SseEmitter.event().data(formattedMessage));
+                System.out.println("Message sent to user " + recipient);
+            } catch (IOException e) {
+                System.err.println("Error sending unicast message to user " + recipient + ": " + e.getMessage());
+                userEmitters.remove(recipient); // Optionally remove the emitter on error
+            }
+        } else {
+            System.err.println("User " + recipient + " not found or not connected.");
+        }
     }
 }
